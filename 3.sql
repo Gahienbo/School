@@ -66,7 +66,7 @@ CREATE TABLE okruh_predmetu_predmet ( --zahrnuje
 CREATE TABLE student(
     login varchar(8) NOT NULL PRIMARY KEY CHECK(REGEXP_LIKE(login, 'x[a-z]{5}[0-9,a-z]{2}')),
     jmeno varchar(80) NOT NULL,
-    primjmeni varchar(80) NOT NULL,
+    prijmeni varchar(80) NOT NULL,
     adresa_ulice varchar(80) NOT NULL,
     adresa_ulice_popisne int NOT NULL,
     adresa_mesto varchar(80) NOT NULL,
@@ -130,7 +130,7 @@ CREATE TABLE doktorand_predmet ( --podili se
 --NAPLNENI TABULEK--
 
 INSERT INTO  studijni_program (id_programu, fakulta, delka, forma_studia)
-VALUES ('IT-BC-3','Fakulta XHRANI02Informačních technologií',3,'Prezenční');
+VALUES ('IT-BC-3','Fakulta Informačních technologií',3,'Prezenční');
 INSERT INTO  studijni_program (id_programu, fakulta, delka, forma_studia)
 VALUES ('IT-MGR-2','Fakulta Informačních technologií',2,'Prezenční');
 INSERT INTO  studijni_program (id_programu, fakulta, delka, forma_studia)
@@ -186,6 +186,10 @@ INSERT INTO predmet(id_predmetu, nazev, kreditovy_obnos, zpusob_zakonceni, zapoc
 VALUES ('BIF','	Bioinformatika',5,'Zkouška','NE','Ing. Tomáš Martínek, Ph.D.');
 INSERT INTO predmet(id_predmetu, nazev, kreditovy_obnos, zpusob_zakonceni, zapocet, garant)
 VALUES ('PBI','Pokročilá bioinformatika',4,'Zkouška','NE','Ing. Matej Lexa, Ph.D.');
+INSERT INTO predmet(id_predmetu, nazev, kreditovy_obnos, zpusob_zakonceni, zapocet, garant)
+VALUES ('IW1','Desktop systémy Microsoft Windows',5,'Zkouška','ANO','Ing. Igor Hnízdo, Ph.D.');
+INSERT INTO predmet(id_predmetu, nazev, kreditovy_obnos, zpusob_zakonceni, zapocet, garant)
+VALUES ('IPZ','Periferní zařízení',3,'Zkouška','NE','Ing. Ivo Perifer, Ph.D.');
 
 --okruhy predmetu
 INSERT INTO okruh_predmetu_predmet(id_okruhu, semestr, id_predmetu, id_oboru)
@@ -208,7 +212,7 @@ INSERT INTO okruh_predmetu_predmet(id_okruhu, semestr, id_predmetu, id_oboru)
 VALUES ('P','Zimní','PBI','NBIO');
 
 --studenti
-INSERT INTO student(login, jmeno, primjmeni, adresa_ulice, adresa_ulice_popisne, adresa_mesto, adresa_psc, adresa_stat, datum_nar, pohlavi)
+INSERT INTO student(login, jmeno, prijmeni, adresa_ulice, adresa_ulice_popisne, adresa_mesto, adresa_psc, adresa_stat, datum_nar, pohlavi)
 VALUES('xhrani02','Jan','Hranický','Josefa Kotase',33,'Ostrava',70030,'České republika',TO_DATE('1999-02-21', 'yyyy/mm/dd'),'Muž');
 INSERT INTO student_studijni_program(login, id_programu)
 VALUES ('xhrani02','IT-BC-3');
@@ -221,7 +225,7 @@ VALUES ('xhrani02','IZU');
 INSERT INTO predmet_student(login, id_predmetu)
 VALUES ('xhrani02','IAL');
 
-INSERT INTO student(login, jmeno, primjmeni, adresa_ulice, adresa_ulice_popisne, adresa_mesto, adresa_psc, adresa_stat, datum_nar, pohlavi)
+INSERT INTO student(login, jmeno, prijmeni, adresa_ulice, adresa_ulice_popisne, adresa_mesto, adresa_psc, adresa_stat, datum_nar, pohlavi)
 VALUES('xsvobo1t','Jonáš','Svoboda','Na Rybníčku',8,'Opava',74601,'České republika',TO_DATE('1999-08-08', 'yyyy/mm/dd'),'Muž');
 INSERT INTO student_studijni_program(login, id_programu)
 VALUES ('xsvobo1t','IT-BC-3');
@@ -236,7 +240,7 @@ VALUES ('xsvobo1t','IJA');
 INSERT INTO predmet_student(login, id_predmetu)
 VALUES ('xsvobo1t','IZU');
 
-INSERT INTO student(login, jmeno, primjmeni, adresa_ulice, adresa_ulice_popisne, adresa_mesto, adresa_psc, adresa_stat, datum_nar, pohlavi)
+INSERT INTO student(login, jmeno, prijmeni, adresa_ulice, adresa_ulice_popisne, adresa_mesto, adresa_psc, adresa_stat, datum_nar, pohlavi)
 VALUES('xradko01','Radek','Radkovič','Palackého náměstí',42,'Praha',19000,'České republika',TO_DATE('1999-01-18', 'yyyy/mm/dd'),'Muž');
 INSERT INTO student_studijni_program(login, id_programu)
 VALUES ('xradko01','IT-BC-3');
@@ -251,7 +255,7 @@ VALUES ('xradko01','IJA');
 INSERT INTO predmet_student(login, id_predmetu)
 VALUES ('xradko01','ITW');
 
-INSERT INTO student(login, jmeno, primjmeni, adresa_ulice, adresa_ulice_popisne, adresa_mesto, adresa_psc, adresa_stat, datum_nar, pohlavi)
+INSERT INTO student(login, jmeno, prijmeni, adresa_ulice, adresa_ulice_popisne, adresa_mesto, adresa_psc, adresa_stat, datum_nar, pohlavi)
 VALUES('xuhran00','Xénie','Uhrančivá','Dolní náměstí',18,'Opava',74601,'České republika',TO_DATE('1999-05-05', 'yyyy/mm/dd'),'Žena');
 INSERT INTO student_studijni_program(login, id_programu)
 VALUES ('xuhran00','IT-BC-3');
@@ -262,7 +266,7 @@ VALUES ('xuhran00','ISS');
 INSERT INTO predmet_student(login, id_predmetu)
 VALUES ('xuhran00','IZU');
 
-INSERT INTO student(login, jmeno, primjmeni, adresa_ulice, adresa_ulice_popisne, adresa_mesto, adresa_psc, adresa_stat, datum_nar, pohlavi)
+INSERT INTO student(login, jmeno, prijmeni, adresa_ulice, adresa_ulice_popisne, adresa_mesto, adresa_psc, adresa_stat, datum_nar, pohlavi)
 VALUES('xstrud02','Greta','Štrůdlová','Frýdko-místecká ulice',10,'Frýdek Místek',74800,'České republika',TO_DATE('1998-12-24', 'yyyy/mm/dd'),'Žena');
 INSERT INTO student_studijni_program(login, id_programu)
 VALUES ('xstrud02','IT-BC-3');
@@ -275,7 +279,7 @@ VALUES ('xstrud02','IZU');
 
 --doktorandi
 
-INSERT INTO student(login, jmeno, primjmeni, adresa_ulice, adresa_ulice_popisne, adresa_mesto, adresa_psc, adresa_stat, datum_nar, pohlavi)
+INSERT INTO student(login, jmeno, prijmeni, adresa_ulice, adresa_ulice_popisne, adresa_mesto, adresa_psc, adresa_stat, datum_nar, pohlavi)
 VALUES('xnezve00','Tereza','Nezvěstná','Božetěchova',42,'Brno',61200,'České republika',TO_DATE('1992-12-12', 'yyyy/mm/dd'),'Žena');
 INSERT INTO student_studijni_program(login, id_programu)
 VALUES ('xnezve00','MITAI');
@@ -290,7 +294,7 @@ VALUES ('xnezve00','AVS');
 INSERT INTO predmet_student(login, id_predmetu)
 VALUES ('xnezve00','PBI');
 
-INSERT INTO student(login, jmeno, primjmeni, adresa_ulice, adresa_ulice_popisne, adresa_mesto, adresa_psc, adresa_stat, datum_nar, pohlavi)
+INSERT INTO student(login, jmeno, prijmeni, adresa_ulice, adresa_ulice_popisne, adresa_mesto, adresa_psc, adresa_stat, datum_nar, pohlavi)
 VALUES('xhonnn00','Josef','Hon','Božetěchova',42,'Brno',61200,'České republika',TO_DATE('1992-05-07', 'yyyy/mm/dd'),'Muž');
 INSERT INTO student_studijni_program(login, id_programu)
 VALUES ('xhonnn00','MITAI');
@@ -303,7 +307,7 @@ VALUES ('xhonnn00','AVS');
 INSERT INTO predmet_student(login, id_predmetu)
 VALUES ('xhonnn00','PBI');
 
-INSERT INTO student(login, jmeno, primjmeni, adresa_ulice, adresa_ulice_popisne, adresa_mesto, adresa_psc, adresa_stat, datum_nar, pohlavi)
+INSERT INTO student(login, jmeno, prijmeni, adresa_ulice, adresa_ulice_popisne, adresa_mesto, adresa_psc, adresa_stat, datum_nar, pohlavi)
 VALUES('xmarti00','Filip','Martiček','Božetěchova',42,'Brno',61200,'České republika',TO_DATE('1993-01-01', 'yyyy/mm/dd'),'Muž');
 INSERT INTO student_studijni_program(login, id_programu)
 VALUES ('xmarti00','MITAI');
@@ -312,7 +316,7 @@ VALUES ('xmarti00','ing.');
 INSERT INTO doktorand_predmet(login, id_predmetu)
 VALUES ('xmarti00','IZU');
 
-INSERT INTO student(login, jmeno, primjmeni, adresa_ulice, adresa_ulice_popisne, adresa_mesto, adresa_psc, adresa_stat, datum_nar, pohlavi)
+INSERT INTO student(login, jmeno, prijmeni, adresa_ulice, adresa_ulice_popisne, adresa_mesto, adresa_psc, adresa_stat, datum_nar, pohlavi)
 VALUES('xrando00','Random','Mák','Random Ulice',33,'Ostrava',70030,'České republika',TO_DATE('1992-02-21', 'yyyy/mm/dd'),'Muž');
 INSERT INTO student_studijni_program(login, id_programu)
 VALUES ('xrando00','MITAI');
@@ -320,17 +324,25 @@ INSERT INTO doktorand(login, titul)
 VALUES ('xrando00','ing.');
 INSERT INTO doktorand_predmet(login, id_predmetu)
 VALUES ('xrando00','ISS');
-
 --=================================================================================
 --3. ČÁST SELECT
 --
 --1/2 Join 2 tabulek. Které obory nabízí magisterský studijní program ?
-SELECT * from obor JOIN studijni_program sp on sp.id_programu = obor.id_programu
+SELECT obor.id_oboru,
+       obor.nazev_oboru
+from obor JOIN studijni_program sp on sp.id_programu = obor.id_programu
 WHERE sp.delka = '2';
 --2/2 Join 2 tabulek. Kteří studenti jsou doktorandi ?
-SELECT * from student JOIN doktorand on student.login = doktorand.login;
+SELECT student.login,
+       student.jmeno,
+       student.prijmeni
+FROM student JOIN doktorand on student.login = doktorand.login;
 
---1/1 dotaz s predikatem IN. Ktere předmety si nikdo nezaregistroval ? musime pridat vic predmetu
+--3/2 Join dvou tabulek. Studenti s datumem narození 1992 jsou automaticky doktorandy.
+SELECT * from student JOIN doktorand on student.login = doktorand.login
+WHERE EXTRACT(YEAR FROM TO_DATE(datum_nar, 'yyyy/mm/dd')) = 1992-01-01;
+
+--1/1 dotaz s predikatem IN. Ktere předmety si nikdo nezaregistroval ?
 SELECT *
 FROM predmet
 WHERE predmet.id_predmetu NOT IN (
@@ -338,12 +350,30 @@ WHERE predmet.id_predmetu NOT IN (
     FROM predmet_student ps
     );
 
-SELECT login FROM student;
-SELECT * from predmet_student;
-SELECT *
+--1/1 dotaz s predikátem EXISTS. Výpis studentů žijících v Brně.
+SELECT student.login,
+       student.jmeno,
+       student.prijmeni
+FROM student
+WHERE EXISTS (SELECT adresa_mesto FROM student WHERE adresa_mesto = 'Brno');
+
+--1/2 GROUP BY s agregační fcí COUNT. Počet studentů v rámci jednotlivých programů.
+SELECT COUNT(student_studijni_program.login), id_programu
+FROM student_studijni_program
+GROUP BY id_programu
+ORDER BY COUNT(student_studijni_program.login) DESC;
+
+--2/2 GROUP BY s agreg. fcí COUNT. Procentuální zastoupení pohlaví v seznamu studentů.
+SELECT student.pohlavi, COUNT(*) / CAST( SUM(count(*)) over () as float)
+FROM student
+GROUP BY student.pohlavi;
+
+--1/1 spojeni tří tabulek. Výpis počtu kreditrů, které mají zaregistrováni jednotliví studenti
+SELECT student.login,
+       sum(p.kreditovy_obnos)
 From student
 Join predmet_student ps ON student.login = ps.login
 Join predmet p ON p.id_predmetu = ps.id_predmetu
-WHERE p.id_predmetu = 'IAL';
-SELECT SUM(kreditovy_obnos) from predmet;
-SELECT * from predmet;
+GROUP BY student.login
+ORDER BY sum(p.kreditovy_obnos) DESC;
+
