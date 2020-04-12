@@ -328,22 +328,32 @@ VALUES ('xrando00','ISS');
 --3. ČÁST SELECT
 --
 --1/2 Join 2 tabulek. Které obory nabízí magisterský studijní program ?
-SELECT obor.id_oboru,
-       obor.nazev_oboru
+SELECT obor.id_oboru as "Id oboru",
+       obor.nazev_oboru as "Název oboru"
 from obor JOIN studijni_program sp on sp.id_programu = obor.id_programu
 WHERE sp.delka = '2';
 --2/2 Join 2 tabulek. Kteří studenti jsou doktorandi ?
-SELECT student.login,
-       student.jmeno,
-       student.prijmeni
+SELECT student.login as "Login",
+       student.jmeno as "Jméno",
+       student.prijmeni as "Příjmení"
 FROM student JOIN doktorand on student.login = doktorand.login;
 
 --3/2 Join dvou tabulek. Studenti s datumem narození 1992 jsou automaticky doktorandy.
 SELECT * from student JOIN doktorand on student.login = doktorand.login
 WHERE EXTRACT(YEAR FROM TO_DATE(datum_nar, 'yyyy/mm/dd')) = 1992-01-01;
 
+--Join 3 tabulek. Výpis doktorandu, kterí pomáhaji s jinými předměty.
+SELECT doktorand.login as "Login",
+       student.jmeno as "Jméno",
+       student.prijmeni as "Příjmení",
+       doktorand_predmet.id_predmetu as "Id předmětu"
+from doktorand
+JOIN student on student.login = doktorand.login
+JOIN doktorand_predmet on doktorand.login = doktorand_predmet.login;
+
 --1/1 dotaz s predikatem IN. Ktere předmety si nikdo nezaregistroval ?
-SELECT *
+SELECT predmet.id_predmetu as "Id předmětu",
+       predmet.nazev as "Název předmětu"
 FROM predmet
 WHERE predmet.id_predmetu NOT IN (
     SELECT ps.id_predmetu
@@ -351,26 +361,28 @@ WHERE predmet.id_predmetu NOT IN (
     );
 
 --1/1 dotaz s predikátem EXISTS. Výpis studentů žijících v Brně.
-SELECT student.login,
-       student.jmeno,
-       student.prijmeni
+SELECT student.login as "Login",
+       student.jmeno as "Jméno",
+       student.prijmeni as "Příjmení"
 FROM student
 WHERE EXISTS (SELECT adresa_mesto FROM student WHERE adresa_mesto = 'Brno');
 
 --1/2 GROUP BY s agregační fcí COUNT. Počet studentů v rámci jednotlivých programů.
-SELECT COUNT(student_studijni_program.login), id_programu
+SELECT student_studijni_program.id_programu as "Id programu",
+       COUNT(student_studijni_program.login) as "Počet studentů"
 FROM student_studijni_program
-GROUP BY id_programu
+GROUP BY student_studijni_program.id_programu
 ORDER BY COUNT(student_studijni_program.login) DESC;
 
 --2/2 GROUP BY s agreg. fcí COUNT. Procentuální zastoupení pohlaví v seznamu studentů.
-SELECT student.pohlavi, COUNT(*) / CAST( SUM(count(*)) over () as float)
+SELECT student.pohlavi as "Pohlaví",
+       COUNT(*) / CAST( SUM(count(*)) over () as float) as "Zastoupení"
 FROM student
 GROUP BY student.pohlavi;
 
---1/1 spojeni tří tabulek. Výpis počtu kreditrů, které mají zaregistrováni jednotliví studenti
-SELECT student.login,
-       sum(p.kreditovy_obnos)
+--1/1 spojeni tří tabulek. Výpis počtu kreditů, které mají zaregistrováni jednotliví studenti
+SELECT student.login as "Login",
+       sum(p.kreditovy_obnos) as "Počet Kreditů"
 From student
 Join predmet_student ps ON student.login = ps.login
 Join predmet p ON p.id_predmetu = ps.id_predmetu
