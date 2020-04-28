@@ -9,6 +9,9 @@ DROP TABLE predmet;
 DROP TABLE studijni_program;
 DROP TABLE doktorand;
 DROP TABLE student;
+DROP MATERIALIZED VIEW LOG ON predmet;
+DROP MATERIALIZED VIEW predmet_info;
+DROP FUNCTION stripAccentsv;
 
 --VYTVORENI TABULEK--
 CREATE TABLE studijni_program (
@@ -443,28 +446,66 @@ select student.login from student;
 
 --index pro optimalizaci + ukazka + EXPLAIN PLAN
 EXPLAIN PLAN FOR
-SELECT student_studijni_program.id_programu as "Id programu",
-       COUNT(student_studijni_program.login) as "Počet studentů"
-FROM student_studijni_program
-GROUP BY student_studijni_program.id_programu
-ORDER BY COUNT(student_studijni_program.login) DESC;
+SELECT student.adresa_mesto,
+       count(student.login)
+from student
+JOIN student_studijni_program ON student.login = student_studijni_program.login
+JOIN studijni_program on student_studijni_program.id_programu = studijni_program.id_programu
+WHERE studijni_program.delka = 3
+GROUP BY student.adresa_mesto
+ORDER BY count(student.login) DESC;
 
 SELECT PLAN_TABLE_OUTPUT FROM TABLE(DBMS_XPLAN.DISPLAY());
 
-CREATE INDEX stp_index ON student_studijni_program (id_programu, login);
+CREATE INDEX student_mesto_index on student (adresa_mesto,login);
+CREATE INDEX studijni_program_index on studijni_program (delka,id_programu);
 
 EXPLAIN PLAN FOR
-SELECT student_studijni_program.id_programu as "Id programu",
-       COUNT(student_studijni_program.login) as "Počet studentů"
-FROM student_studijni_program
-GROUP BY student_studijni_program.id_programu
-ORDER BY COUNT(student_studijni_program.login) DESC;
+SELECT student.adresa_mesto,
+       count(student.login)
+from student
+JOIN student_studijni_program ON student.login = student_studijni_program.login
+JOIN studijni_program on student_studijni_program.id_programu = studijni_program.id_programu
+WHERE studijni_program.delka = 3
+GROUP BY student.adresa_mesto
+ORDER BY count(student.login) DESC;
 
 SELECT PLAN_TABLE_OUTPUT FROM TABLE(DBMS_XPLAN.DISPLAY());
 
-DROP INDEX stp_index;
+DROP INDEX student_mesto_index;
+DROP INDEX studijni_program_index;
 
 -- definice pristupovych prav
+--xsvobod1t
+GRANT ALL ON doktorand TO xsvobo1t;
+GRANT ALL ON obor TO xsvobo1t;
+GRANT ALL ON okruh_predmetu TO xsvobo1t;
+GRANT ALL ON predmet TO xsvobo1t;
+GRANT ALL ON student TO xsvobo1t;
+GRANT ALL ON studijni_program TO xsvobo1t;
+--plus procedury
 
 --materilalizovany pohled
- SELECT * FROM STUDENT
+
+CREATE MATERIALIZED VIEW LOG ON predmet WITH PRIMARY KEY, ROWID(kreditovy_obnos) INCLUDING NEW VALUES;
+
+CREATE MATERIALIZED VIEW predmet_info
+CACHE
+BUILD IMMEDIATE
+REFRESH FAST ON COMMIT
+ENABLE QUERY REWRITE
+AS SELECT p.kreditovy_obnos, count(p.kreditovy_obnos) as kredity
+FROM predmet p
+GROUP BY p.kreditovy_obnos
+ORDER BY count(p.kreditovy_obnos) desc;
+
+GRANT ALL ON predmet_info TO xsvobo1t;
+
+SELECT * from predmet_info;
+
+INSERT INTO predmet(id_predmetu, nazev, kreditovy_obnos, zpusob_zakonceni, zapocet, garant)
+VALUES ('TSs','TesttPredmet',6,'Zkouška','ANO',NULL);
+
+COMMIT;
+
+SELECT * from predmet_info;
