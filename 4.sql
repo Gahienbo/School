@@ -10,6 +10,10 @@ DROP TABLE studijni_program;
 DROP TABLE doktorand;
 DROP TABLE student;
 
+--DROP PROCEDUR--
+DROP PROCEDURE vypocti_procenta;
+DROP PROCEDURE procenta_predmetu;
+
 --DROP FUNKCI--
 DROP FUNCTION stripAccentsv;
 
@@ -130,6 +134,7 @@ CREATE TABLE doktorand_predmet ( --podili se
         ON DELETE CASCADE
 );
 
+--=========================================================================================
 --pomocna funkce maze diakritiku v prijmeni pro generaci loginu
 CREATE OR REPLACE FUNCTION stripAccentsv(prijmeni in varchar) RETURN varchar
 AS
@@ -179,6 +184,7 @@ BEGIN
     END IF;
 
 END;
+--=======================================================================================
 
 --NAPLNENI TABULEK--
 
@@ -436,13 +442,89 @@ ORDER BY sum(p.kreditovy_obnos) DESC;
 
 select student.login from student;
 
+--demonstrace druheho triggeru
 --pri vlozeni oboru s datem akreditace koncicim v roce 2018 vyvola se vyjimka
+
 -- INSERT INTO obor(id_oboru, nazev_oboru, akreditace_do, id_programu)
 -- VALUES ('TST','Testovací Obor',TO_DATE('2018', 'yyyy'),'TE-ST-3');
+
 --################
 
 --procedury
---TODO
+--Pomocna procedura pro vypocet procent
+CREATE OR REPLACE PROCEDURE vypocti_procenta(celkovy_pocet NUMBER,pocet_kategorie NUMBER, nazev_kategorie VARCHAR, student VARCHAR) AS
+BEGIN
+    DECLARE procentualni_zastoupeni NUMBER;
+    BEGIN
+            IF pocet_kategorie > 0 THEN
+            procentualni_zastoupeni := pocet_kategorie / celkovy_pocet;
+            procentualni_zastoupeni := procentualni_zastoupeni * 100;
+            procentualni_zastoupeni := ROUND(procentualni_zastoupeni);
+            DBMS_OUTPUT.put_line('Student ' || student || ' má z kategorie' || nazev_kategorie || ' zaregistrovano ' || procentualni_zastoupeni || '% předmětů, konkrétně ' || pocet_kategorie || ' předmět');
+            END IF;
+            IF pocet_kategorie = 0 THEN
+                DBMS_OUTPUT.put_line('Student ' || student || ' nemá z kategorie ' || nazev_kategorie || ' zaregistrován žádný předmět');
+            END IF;
+    END;
+END;
+
+--vypocet procentualniho zastoupeni predmetu danych kategorii pro studenta zadaneho argumentenm
+CREATE OR REPLACE PROCEDURE procenta_predmetu(login_arg varchar) AS
+    BEGIN
+        DECLARE CURSOR zp_cursor is
+        SELECT opp.id_okruhu
+            FROM student s, predmet_student ps, okruh_predmetu_predmet opp
+        WHERE s.login = login_arg AND s.login = ps.login AND ps.id_predmetu = opp.id_predmetu;
+        login_student student.login%type;
+        tmp_okruh okruh_predmetu_predmet.id_okruhu%type;
+        celkovy_pocet NUMBER;
+        pvt_pocet NUMBER;
+        v_pocet NUMBER;
+        p_pocet NUMBER;
+        tmp_pocet NUMBER;
+        BEGIN
+            celkovy_pocet := 0;
+            pvt_pocet := 0;
+            v_pocet := 0;
+            p_pocet := 0;
+            OPEN zp_cursor;
+            LOOP
+                FETCH zp_cursor INTO tmp_okruh;
+                EXIT WHEN zp_cursor%NOTFOUND;
+                celkovy_pocet := celkovy_pocet + 1;
+                IF tmp_okruh = 'P' THEN --P,PVT,V
+                    p_pocet := p_pocet + 1;
+                END IF;
+                IF tmp_okruh = 'PVT' THEN
+                    pvt_pocet := pvt_pocet + 1;
+                END IF;
+                IF tmp_okruh = 'V' THEN
+                    v_pocet := v_pocet + 1;
+                END IF;
+            END LOOP;
+            CLOSE zp_cursor;
+
+            IF celkovy_pocet = 0 THEN
+                DBMS_OUTPUT.put_line('Student ' || login_arg || ' nemá zaregistrovány žádné předměty');
+            END IF;
+            IF celkovy_pocet > 0 THEN
+                BEGIN vypocti_procenta(celkovy_pocet,p_pocet,'P',login_arg);END;
+                BEGIN vypocti_procenta(celkovy_pocet,pvt_pocet,'PVT',login_arg);END;
+                BEGIN vypocti_procenta(celkovy_pocet,v_pocet,'V',login_arg);END;
+            END IF;
+		END;
+    END;
+
+
+--demonstrace procedur
+--student bez zapsanych predmetu
+BEGIN procenta_predmetu('xhrani00');END;
+--student se zapsanymi predmety
+BEGIN procenta_predmetu('xsvobo00');END;
+--student s 0 poctem volitelných a povinne volitelnych předmětů
+BEGIN procenta_predmetu('xnezve00');END;
+
+
 
 --index pro optimalizaci + ukazka + EXPLAIN PLAN
 
