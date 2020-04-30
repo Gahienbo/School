@@ -13,6 +13,7 @@ DROP TABLE student;
 --DROP PROCEDUR--
 DROP PROCEDURE vypocti_procenta;
 DROP PROCEDURE procenta_predmetu;
+DROP PROCEDURE pohlavi_prumer;
 
 --DROP FUNKCI--
 DROP FUNCTION stripAccentsv;
@@ -515,8 +516,30 @@ CREATE OR REPLACE PROCEDURE procenta_predmetu(login_arg varchar) AS
 		END;
     END;
 
+    --vypocet prumerneho poctu muzu a zen v studijnich programech
+    CREATE OR REPLACE PROCEDURE pohlavi_prumer AS BEGIN
+        DECLARE
+        muzi NUMBER;
+        zeny NUMBER;
+        programy NUMBER;
+    BEGIN
+        SELECT COUNT(*) INTO muzi FROM student
+        WHERE pohlavi = 'Muž';
+        SELECT COUNT(*) INTO zeny FROM student
+        WHERE pohlavi = 'Žena';
+        SELECT COUNT(*) INTO programy FROM studijni_program;
+
+        muzi := muzi / programy;
+        zeny := zeny / programy;
+        DBMS_OUTPUT.put_line('Prumerny pocet muzu ve studijním programu je ' || muzi || '.');
+        DBMS_OUTPUT.put_line('Prumerny pocet zen ve studijnim programu je '|| zeny ||'.');
+    END;
+    END;
 
 --demonstrace procedur
+--procedura pohlavi_prumer
+BEGIN pohlavi_prumer(); END;
+--procedura procenta_predmetu
 --student bez zapsanych predmetu
 BEGIN procenta_predmetu('xhrani00');END;
 --student se zapsanymi predmety
