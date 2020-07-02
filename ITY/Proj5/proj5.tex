@@ -1,0 +1,470 @@
+\documentclass[10pt, hyperref={unicode}]{beamer}
+\usepackage{times}
+\usepackage[T1]{fontenc}
+\usepackage[czech]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{tikz}
+\usepackage{multirow}
+\usepackage{etoolbox}
+\usepackage{graphics}
+\usepackage{pdflscape}
+\usepackage{algorithm,algorithmic}
+
+\usetikzlibrary{automata,positioning}
+\usetheme{Antibes}
+
+\title{Typografie a~publikování\,--\,5.~projekt}
+\subtitle{Dijkstrův algoritmus}
+\author{Jan Hranický\texorpdfstring{\\ xhrani02@vutbr.cz}{}}
+\date{\today}
+\institute
+{
+	Vysoké učení technické v~Brně\\
+	Fakulta informačních technologií
+}
+
+\begin{document}
+  \maketitle
+  \section{Dijkstrův algoritmus}
+  \begin{frame}{Úvod}
+  \bigskip
+    \begin{itemize}
+      \item Konečný grafový algoritmus
+      \item Nejrychleší známý algoritmus pro nalezení všech nejkratších cest ze zadaného uzlu do ostatních uzlů grafu
+      \item Funguje nad hranově kladně ohodnoceným grafem.
+      \item Autorem je nizozemský informatik Edsger Dijkstra
+    \end{itemize}
+  \end{frame}
+
+  \begin{frame}{Princip fungování algoritmu}
+  \bigskip
+    \begin{itemize}
+      \item Mějme graf -- $G$, množinu všech vrcholů grafu $G$ -- $V$, množinu všech hran grafu $G$ -- $E$, množinu navštívených navštívených vrcholů $Z$ a množinu nenavštívených vrcholů $N$
+      \item Algoritmus pracuje tak, že si pro každý vrchol $v \in V$ zapamatuje délku nejkratší cestu $d[v]$, pomocí které se dá do uzlu dostat
+      \item Před spuštením algoritmu se délky cest do všech vrcholů grafu, s vyjímkou počátečního vrcholu, inicializují na hodnotu $\infty$, \item Hodnota $\infty$ symbolizuje, že neznáme cestu k danému vrcholu
+      \item Délka cesty do počátečního vrcholu se inicializuje na $0$
+    \end{itemize}
+  \end{frame}
+
+	\begin{frame}{Princip fungování algoritmu -- pokračování}
+	\bigskip
+		\begin{itemize}
+			\item Algoritmus pracuje v cyklu dokud není množina nenavštívených vrcholů $N$ prázdná:
+			\begin{itemize}
+				\item Z množiny $N$ do množiny $Z$ přesuň takový vrchol, jehož cesta $d[v]$ je nejkratší
+				\item Pro všechny hrany vedoucí z právě přesunutého vrcholu prověď, pokud $d[v]$ hrany > $d[v]$ hrany + $d[v]$ přesunutého vrcholu, zaměň $d[v]$ hrany za $d[v]$ hrany + $d[v]$ přesunutého vrcholu, jinak nedělej nic
+			\end{itemize}
+			\item Po dokončení bude délka $d[v]$ každého vrcholu rovna nejkratší možné cestě do tohoto uzlu, z uzlu počátečního.
+		\end{itemize}
+	\end{frame}
+
+	\begin{frame}{Vizualizace algoritmu}
+	\bigskip
+	$Z \in \emptyset$ \\
+	$N \in \{A,B,C,D,E,F,G\}$
+	\begin{tikzpicture}%
+	  [>=stealth,
+	   shorten >=1pt,
+	   node distance=2cm,
+	   on grid,
+	   auto,
+	   every state/.style={draw=black!60, fill=black!5, very thick},
+		 arrow label/.style = {text = black}
+	  ]
+	\node[state] (mid)                  {D--$\infty$};
+	\node[state] (upperLeft) [above left=of mid] {B--$\infty$};
+	\node[state] (upperRight) [above right=of mid] {E--$\infty$};
+	\node[state] (lowerRight) [below right=of mid] {F--$\infty$};
+	\node[state] (lowerLeft)  [below left=of mid]  {C--$\infty$};
+	\node[state] (midLeft)		[left=4cm of mid] {A--$0$};
+	\node[state] (midRight)		[right=4cm of mid] {G--$\infty$};
+	\path[->]
+	%   FROM       BEND/LOOP           POSITION OF LABEL   LABEL   TO
+	   (midLeft)  edge             node                      {6} (upperLeft)
+	   						edge     				 node                      {8} (lowerLeft)
+								edge 						 node 										 {8} (mid)
+		 (upperLeft) edge 					 node 										 {5} (upperRight)
+		 						 edge 					 node 										 {7} (mid)
+		 (lowerLeft) edge 					 node 										 {6} (mid)
+		 						 edge 					 node 										 {5} (lowerRight)
+		 (upperRight) edge 					 node 										 {4} (midRight)
+		 							edge 					 node 										 {8} (mid)
+		 (lowerRight) edge 					 node 										 {4} (midRight)
+		 (mid) 				edge 					 node 										 {9} (midRight)
+		 							edge 					 node 										 {4} (lowerRight)
+	 ;
+	%\draw[->] (mid) to[bend left]  node[arrow label] {Change state} (upperRight);
+	\end{tikzpicture}
+	\end{frame}
+
+	\begin{frame}{Vizualizace algoritmu}
+	\bigskip
+	$Z \in \{A\}$ \\
+	$N \in \{B,C,D,E,F,G\}$
+	\begin{tikzpicture}%
+	  [>=stealth,
+	   shorten >=1pt,
+	   node distance=2cm,
+	   on grid,
+	   auto,
+	   every state/.style={draw=black!60, fill=black!5, very thick},
+		 arrow label/.style = {text = black}
+	  ]
+	\node[state] (mid)                  {D--$8$};
+	\node[state] (upperLeft) [above left=of mid] {B--$6$};
+	\node[state] (upperRight) [above right=of mid] {E--$\infty$};
+	\node[state] (lowerRight) [below right=of mid] {F--$\infty$};
+	\node[state] (lowerLeft)  [below left=of mid]  {C--$8$};
+	\node[state,fill = green] (midLeft)		[left=4cm of mid] {A--$0$};
+	\node[state] (midRight)		[right=4cm of mid] {G--$\infty$};
+	\path[->,red]
+	%   FROM       BEND/LOOP           POSITION OF LABEL   LABEL   TO
+	   (midLeft)  edge             node[arrow label]                      {6} (upperLeft)
+	   						edge     				 node[arrow label]                       {8} (lowerLeft)
+								edge 						 node[arrow label]  										 {8} (mid)
+			;
+			\path[->]
+		 (upperLeft) edge 					 node 										 {5} (upperRight)
+		 						 edge 					 node 										 {7} (mid)
+		 (lowerLeft) edge 					 node 										 {6} (mid)
+		 						 edge 					 node 										 {5} (lowerRight)
+		 (upperRight) edge 					 node 										 {4} (midRight)
+		 							edge 					 node 										 {8} (mid)
+		 (lowerRight) edge 					 node 										 {4} (midRight)
+		 (mid) 				edge 					 node 										 {9} (midRight)
+		 							edge 					 node 										 {4} (lowerRight)
+	 ;
+	%\draw[->] (mid) to[bend left]  node[arrow label] {Change state} (upperRight);
+	\end{tikzpicture}
+	\end{frame}
+
+	\begin{frame}{Vizualizace algoritmu}
+	\bigskip
+	$Z \in \{A,B\}$ \\
+	$N \in \{C,D,E,F,G\}$
+	\begin{tikzpicture}%
+		[>=stealth,
+		 shorten >=1pt,
+		 node distance=2cm,
+		 on grid,
+		 auto,
+		 every state/.style={draw=black!60, fill=black!5, very thick},
+		 arrow label/.style = {text = black}
+		]
+	\node[state] (mid)                  {D--$8$};
+	\node[state,fill = green] (upperLeft) [above left=of mid] {B--$6$};
+	\node[state] (upperRight) [above right=of mid] {E--$11$};
+	\node[state] (lowerRight) [below right=of mid] {F--$\infty$};
+	\node[state] (lowerLeft)  [below left=of mid]  {C--$8$};
+	\node[state,fill = green] (midLeft)		[left=4cm of mid] {A--$0$};
+	\node[state] (midRight)		[right=4cm of mid] {G--$\infty$};
+	\path[->,red]
+	%   FROM       BEND/LOOP           POSITION OF LABEL   LABEL   TO
+		 (midLeft)  edge             node[arrow label]                      {6} (upperLeft)
+								edge     				 node[arrow label]                       {8} (lowerLeft)
+								edge 						 node[arrow label]  										 {8} (mid)
+		(upperLeft) edge 					 node[arrow label] 										 {5} (upperRight)
+					 		  edge 					 node[arrow label]										 {7} (mid)
+			;
+			\path[->]
+		 (lowerLeft) edge 					 node 										 {6} (mid)
+								 edge 					 node 										 {5} (lowerRight)
+		 (upperRight) edge 					 node 										 {4} (midRight)
+									edge 					 node 										 {8} (mid)
+		 (lowerRight) edge 					 node 										 {4} (midRight)
+		 (mid) 				edge 					 node 										 {9} (midRight)
+									edge 					 node 										 {4} (lowerRight)
+	 ;
+	%\draw[->] (mid) to[bend left]  node[arrow label] {Change state} (upperRight);
+	\end{tikzpicture}
+	\end{frame}
+
+	\begin{frame}{Vizualizace algoritmu}
+	\bigskip
+	$Z \in \{A,B,C\}$ \\
+	$N \in \{D,E,F,G\}$
+	\begin{tikzpicture}%
+		[>=stealth,
+		 shorten >=1pt,
+		 node distance=2cm,
+		 on grid,
+		 auto,
+		 every state/.style={draw=black!60, fill=black!5, very thick},
+		 arrow label/.style = {text = black}
+		]
+	\node[state] (mid)                  {D--$8$};
+	\node[state,fill = green] (upperLeft) [above left=of mid] {B--$6$};
+	\node[state] (upperRight) [above right=of mid] {E--$11$};
+	\node[state] (lowerRight) [below right=of mid] {F--$13$};
+	\node[state,fill = green] (lowerLeft)  [below left=of mid]  {C--$8$};
+	\node[state,fill = green] (midLeft)		[left=4cm of mid] {A--$0$};
+	\node[state] (midRight)		[right=4cm of mid] {G--$\infty$};
+	\path[->,red]
+	%   FROM       BEND/LOOP           POSITION OF LABEL   LABEL   TO
+		 (midLeft)  edge             node[arrow label]                      {6} (upperLeft)
+								edge     				 node[arrow label]                       {8} (lowerLeft)
+								edge 						 node[arrow label]  										 {8} (mid)
+		(upperLeft) edge 					 node[arrow label] 										 {5} (upperRight)
+					 		  edge 					 node[arrow label]										 {7} (mid)
+		(lowerLeft) edge 					 node[arrow label] 										 {6} (mid)
+								edge 					 node[arrow label]										 {5} (lowerRight)
+			;
+			\path[->]
+
+		 (upperRight) edge 					 node 										 {4} (midRight)
+									edge 					 node 										 {8} (mid)
+		 (lowerRight) edge 					 node 										 {4} (midRight)
+		 (mid) 				edge 					 node 										 {9} (midRight)
+									edge 					 node 										 {4} (lowerRight)
+	 ;
+	%\draw[->] (mid) to[bend left]  node[arrow label] {Change state} (upperRight);
+	\end{tikzpicture}
+	\end{frame}
+
+	\begin{frame}{Vizualizace algoritmu}
+	\bigskip
+	$Z \in \{A,B,C,D\}$ \\
+	$N \in \{E,F,G\}$
+	\begin{tikzpicture}%
+		[>=stealth,
+		 shorten >=1pt,
+		 node distance=2cm,
+		 on grid,
+		 auto,
+		 every state/.style={draw=black!60, fill=black!5, very thick},
+		 arrow label/.style = {text = black}
+		]
+	\node[state,fill = green] (mid)                  {D--$8$};
+	\node[state,fill = green] (upperLeft) [above left=of mid] {B--$6$};
+	\node[state] (upperRight) [above right=of mid] {E--$11$};
+	\node[state] (lowerRight) [below right=of mid] {F--$12$};
+	\node[state,fill = green] (lowerLeft)  [below left=of mid]  {C--$8$};
+	\node[state,fill = green] (midLeft)		[left=4cm of mid] {A--$0$};
+	\node[state] (midRight)		[right=4cm of mid] {G--$17$};
+	\path[->,red]
+	%   FROM       BEND/LOOP           POSITION OF LABEL   LABEL   TO
+		 (midLeft)  edge             node[arrow label]                      {6} (upperLeft)
+								edge     				 node[arrow label]                       {8} (lowerLeft)
+								edge 						 node[arrow label]  										 {8} (mid)
+		(upperLeft) edge 					 node[arrow label] 										 {5} (upperRight)
+								edge 					 node[arrow label]										 {7} (mid)
+		(lowerLeft) edge 					 node[arrow label] 										 {6} (mid)
+								edge 					 node[arrow label]										 {5} (lowerRight)
+	(mid) 				edge 					 node[arrow label] 										 {9} (midRight)
+					 			edge 					 node[arrow label] 										 {4} (lowerRight)
+			;
+			\path[->]
+
+		 (upperRight) edge 					 node 										 {4} (midRight)
+									edge 					 node 										 {8} (mid)
+		 (lowerRight) edge 					 node 										 {4} (midRight)
+	 ;
+	%\draw[->] (mid) to[bend left]  node[arrow label] {Change state} (upperRight);
+	\end{tikzpicture}
+	\end{frame}
+
+	\begin{frame}{Vizualizace algoritmu}
+	\bigskip
+	$Z \in \{A,B,C,D,E\}$ \\
+	$N \in \{F,G\}$
+	\begin{tikzpicture}%
+		[>=stealth,
+		 shorten >=1pt,
+		 node distance=2cm,
+		 on grid,
+		 auto,
+		 every state/.style={draw=black!60, fill=black!5, very thick},
+		 arrow label/.style = {text = black}
+		]
+	\node[state,fill = green] (mid)                  {D--$8$};
+	\node[state,fill = green] (upperLeft) [above left=of mid] {B--$6$};
+	\node[state,fill = green] (upperRight) [above right=of mid] {E--$11$};
+	\node[state] (lowerRight) [below right=of mid] {F--$12$};
+	\node[state,fill = green] (lowerLeft)  [below left=of mid]  {C--$8$};
+	\node[state,fill = green] (midLeft)		[left=4cm of mid] {A--$0$};
+	\node[state] (midRight)		[right=4cm of mid] {G--$15$};
+	\path[->,red]
+	%   FROM       BEND/LOOP           POSITION OF LABEL   LABEL   TO
+		 (midLeft)  edge             node[arrow label]                      {6} (upperLeft)
+								edge     				 node[arrow label]                       {8} (lowerLeft)
+								edge 						 node[arrow label]  										 {8} (mid)
+		(upperLeft) edge 					 node[arrow label] 										 {5} (upperRight)
+								edge 					 node[arrow label]										 {7} (mid)
+		(lowerLeft) edge 					 node[arrow label] 										 {6} (mid)
+								edge 					 node[arrow label]										 {5} (lowerRight)
+	(mid) 				edge 					 node[arrow label] 										 {9} (midRight)
+								edge 					 node[arrow label] 										 {4} (lowerRight)
+	 (upperRight) edge 					 node[arrow label] 										 {4} (midRight)
+					 			edge 					 node[arrow label] 										 {8} (mid)
+			;
+			\path[->]
+
+		 (lowerRight) edge 					 node 										 {4} (midRight)
+	 ;
+	%\draw[->] (mid) to[bend left]  node[arrow label] {Change state} (upperRight);
+	\end{tikzpicture}
+	\end{frame}
+
+	\begin{frame}{Vizualizace algoritmu}
+	\bigskip
+	$Z \in \{A,B,C,D,E,F\}$ \\
+	$N \in \{G\}$
+	\begin{tikzpicture}%
+		[>=stealth,
+		 shorten >=1pt,
+		 node distance=2cm,
+		 on grid,
+		 auto,
+		 every state/.style={draw=black!60, fill=black!5, very thick},
+		 arrow label/.style = {text = black}
+		]
+	\node[state,fill = green] (mid)                  {D--$8$};
+	\node[state,fill = green] (upperLeft) [above left=of mid] {B--$6$};
+	\node[state,fill = green] (upperRight) [above right=of mid] {E--$11$};
+	\node[state,fill = green] (lowerRight) [below right=of mid] {F--$12$};
+	\node[state,fill = green] (lowerLeft)  [below left=of mid]  {C--$8$};
+	\node[state,fill = green] (midLeft)		[left=4cm of mid] {A--$0$};
+	\node[state] (midRight)		[right=4cm of mid] {G--$15$};
+	\path[->,red]
+	%   FROM       BEND/LOOP           POSITION OF LABEL   LABEL   TO
+		 (midLeft)  edge             node[arrow label]                      {6} (upperLeft)
+								edge     				 node[arrow label]                       {8} (lowerLeft)
+								edge 						 node[arrow label]  										 {8} (mid)
+		(upperLeft) edge 					 node[arrow label] 										 {5} (upperRight)
+								edge 					 node[arrow label]										 {7} (mid)
+		(lowerLeft) edge 					 node[arrow label] 										 {6} (mid)
+								edge 					 node[arrow label]										 {5} (lowerRight)
+	(mid) 				edge 					 node[arrow label] 										 {9} (midRight)
+								edge 					 node[arrow label] 										 {4} (lowerRight)
+	 (upperRight) edge 					 node[arrow label] 										 {4} (midRight)
+								edge 					 node[arrow label] 										 {8} (mid)
+	(lowerRight) edge 					 node[arrow label]										 {4} (midRight)
+;
+	%\draw[->] (mid) to[bend left]  node[arrow label] {Change state} (upperRight);
+	\end{tikzpicture}
+	\end{frame}
+
+	\begin{frame}{Vizualizace algoritmu}
+	\bigskip
+	$Z \in \{A,B,C,D,E,F\}$ \\
+	$N \in \emptyset$
+	\begin{tikzpicture}%
+		[>=stealth,
+		 shorten >=1pt,
+		 node distance=2cm,
+		 on grid,
+		 auto,
+		 every state/.style={draw=black!60, fill=black!5, very thick},
+		 arrow label/.style = {text = black}
+		]
+	\node[state,fill = green] (mid)                  {D--$8$};
+	\node[state,fill = green] (upperLeft) [above left=of mid] {B--$6$};
+	\node[state,fill = green] (upperRight) [above right=of mid] {E--$11$};
+	\node[state,fill = green] (lowerRight) [below right=of mid] {F--$12$};
+	\node[state,fill = green] (lowerLeft)  [below left=of mid]  {C--$8$};
+	\node[state,fill = green] (midLeft)		[left=4cm of mid] {A--$0$};
+	\node[state,fill = green] (midRight)		[right=4cm of mid] {G--$15$};
+	\path[->,red]
+	%   FROM       BEND/LOOP           POSITION OF LABEL   LABEL   TO
+		 (midLeft)  edge             node[arrow label]                      {6} (upperLeft)
+								edge     				 node[arrow label]                       {8} (lowerLeft)
+								edge 						 node[arrow label]  										 {8} (mid)
+		(upperLeft) edge 					 node[arrow label] 										 {5} (upperRight)
+								edge 					 node[arrow label]										 {7} (mid)
+		(lowerLeft) edge 					 node[arrow label] 										 {6} (mid)
+								edge 					 node[arrow label]										 {5} (lowerRight)
+	(mid) 				edge 					 node[arrow label] 										 {9} (midRight)
+								edge 					 node[arrow label] 										 {4} (lowerRight)
+	 (upperRight) edge 					 node[arrow label] 										 {4} (midRight)
+								edge 					 node[arrow label] 										 {8} (mid)
+	(lowerRight) edge 					 node[arrow label]										 {4} (midRight)
+;
+	%\draw[->] (mid) to[bend left]  node[arrow label] {Change state} (upperRight);
+	\end{tikzpicture}
+	\end{frame}
+
+	\begin{frame}{Nalezení nejkratší cesty}
+	\bigskip
+		\begin{itemize}
+			\item Nejkratší možná cesta z vrcholu $A$ do vrcholu $G$ je dlouhá 15 jednotek
+			\item Následující vizualizace ukazuje jak zjistit konkrétní cestu
+		\end{itemize}
+		\begin{tikzpicture}%
+			[>=stealth,
+			 shorten >=1pt,
+			 node distance=2cm,
+			 on grid,
+			 auto,
+			 every state/.style={draw=black!60, fill=black!5, very thick},
+			 arrow label/.style = {text = black}
+			]
+		\node[state,fill = green] (mid)                  {D--$8$};
+		\node[state,fill = green] (upperLeft) [above left=of mid] {B--$6$};
+		\node[state,fill = green] (upperRight) [above right=of mid] {E--$11$};
+		\node[state,fill = green] (lowerRight) [below right=of mid] {F--$12$};
+		\node[state,fill = green] (lowerLeft)  [below left=of mid]  {C--$8$};
+		\node[state,fill = green] (midLeft)		[left=4cm of mid] {A--$0$};
+		\node[state,fill = green] (midRight)		[right=4cm of mid] {G--$15$};
+		\path[->,red]
+		%   FROM       BEND/LOOP           POSITION OF LABEL   LABEL   TO
+			 (midLeft)  edge     				 node[arrow label]                       {8} (lowerLeft)
+									edge 						 node[arrow label]  										 {8} (mid)
+			(upperLeft)	edge 					 node[arrow label]										 {7} (mid)
+			(lowerLeft) edge 					 node[arrow label] 										 {6} (mid)
+									edge 					 node[arrow label]										 {5} (lowerRight)
+		(mid) 				edge 					 node[arrow label] 										 {9} (midRight)
+									edge 					 node[arrow label] 										 {4} (lowerRight)
+		(upperRight)	edge 					 node[arrow label] 										 {8} (mid)
+		(lowerRight) edge 					 node[arrow label]										 {4} (midRight)
+	;
+	\path[->,green]
+	(upperRight) edge 					 node[arrow label] 										 {15-4 == 11} (midRight)
+	(upperLeft) edge 					 node[arrow label] 										 {11-5 == 6} (upperRight)
+	(midLeft)  edge             node[arrow label]                      {6-6 == 0} (upperLeft)
+	;
+	\end{tikzpicture}
+	\end{frame}
+
+	\begin{frame}{Pseudokód}
+	\begin{algorithm}[H]
+\begin{algorithmic}[1]
+\STATE $Z$ := $\emptyset$
+\FOR{\textbf{each} Vrchol $v$ in $V$}
+\STATE $d[v] := \infty$
+\ENDFOR
+\STATE $d[s] := 0$
+\STATE $N := V$
+\WHILE {N \textbf{is not} $\emptyset$}
+\STATE u := nejkrasi\_cesta($N$)
+\FOR{\textbf{each} Souseda $v$ vrcholu $u$}
+\STATE tempVzdalenost := $d[u] + vzdalenost(u,v)$
+\IF{tempVzdalenost < $d[v]$}
+\STATE $d[v]$ := tempVzdalenost
+\ENDIF
+\ENDFOR
+\STATE přidej $v$ do $Z$
+\ENDWHILE
+\end{algorithmic}
+\caption{Djikstrův algoritmus}
+\end{algorithm}
+\end{frame}
+
+\begin{frame}{Časová složitost}
+\bigskip
+	\begin{itemize}
+		\item Časová složitost Djikstrova algoritmu závisí na implmentaci prioritní fronty
+		\item Časová složitost v případě použití sekvenčního vyhledávání $\mathcal{O}({|n|}^2)$
+		\item Časová složitost v případě použití binární haldy $\mathcal{O}(|n|\log_2{|n|})$
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Zdroje}
+\bigskip
+	\begin{itemize}
+		\item https://cs.wikipedia.org/wiki/Dijkstr%C5%AFv_algoritmus
+		\item https://www.algoritmy.net/article/5108/Dijkstruv-algoritmus
+	\end{itemize}
+\end{frame}
+
+
+\end{document}

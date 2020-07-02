@@ -1,0 +1,40 @@
+\documentclass[11pt, a4paper]{article}
+
+\usepackage{times}
+\usepackage[T1]{fontenc}
+\usepackage[left=2cm, text={17cm, 24cm}, top=3cm]{geometry}
+\usepackage[czech]{babel}
+\usepackage[utf8]{inputenc}
+\bibliographystyle{czplain}
+\begin{document}
+\begin{titlepage}
+\begin{center}
+
+\Huge
+\textsc{Fakulta informačních technologií Vysoké učení technické v~Brně\\}
+\vspace{\stretch{0.382}}
+\LARGE
+Typografie a publikování -- 4. projekt \\
+\Huge{Bibliografické citace}
+\vspace{\stretch{0.618}}
+\end{center}
+{\large 13. dubna 2020 \hfill Jan Hranický -- xhrani02}
+\end{titlepage}
+\section{\LaTeX}
+\subsection{\TeX  vs. \LaTeX}
+\TeX je typografický program patřící do rodiny značkovacích jazyků viz \cite{KopkaHelmut2004AGtL}. V~70. letech 20. století \TeX vytvořil americký profesor informatiky Donald E. Knuth. \LaTeX  je sada nástrojů (tzv. maker) pomocí kterých lze uživatelsky přívětivěji používat jazyk \TeX, podrobněji v \cite{KopkaHelmut2004L}. Na vývoji \LaTeX u se dnes převážně podílí tým \LaTeX 3, viz \cite{wikiLaTeX}
+\subsection{Princip fungování \LaTeX u}
+Vstupem \LaTeX u je textový dokument s~příponou *.tex obsahující příkazy pro sazbu dokumentu. Takovýto soubor je nutno přeložit pomocí překladače. Pro překlad dokumentu lze využít přímo \LaTeX, výstupem potom bude soubor s~příponou *.dvi (Device independent). Takový dokument se poté typicky dále zpracovává do formátu *.pdf. Existují také překladače, které vysázejí přímo dokument ve formátu *.pdf, např. pdftex nebo pdflatex. Detailněji o~principu překladu *.tex souborů se lze dočíst na \cite{BOJKO2011thesis}
+\subsection{Kostra Dokumentu}
+Každý dokument psaný v~{\LaTeX}u obsahuje:
+\begin{itemize}
+  \item Hlavičku
+  \item Tělo dokumentu
+\end{itemize}
+Třída dokumentu bývá uvedena na samém začátku dokumentu \cite{onlineRoot}. Prostor mezi tělem a třídou dokumentu se nazývá preambule viz \cite{KopkaHelmut2004L} \cite{Cerny2011}
+\subsection{Použití \LaTeX u}
+\LaTeX má širokou škálu použití od sazby akademických textů, přes sazbu vektorových obrázků \cite{SedaPavelVGIL} až po reprodukci prastarých textů \cite{ancientText}. Další silnou stránkou \LaTeX u je sazba rovnic. V~čem ale \LaTeX pokulhává, je sazba krátkých plnotextových dokumentů, u~kterých může být vhodnější použít např. MS Word. \cite{abstract}. Více výhod \LaTeX u lze najít v článku \cite{programujteClanek}
+
+\newpage
+\bibliography{proj4}
+\end{document}
