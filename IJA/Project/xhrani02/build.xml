@@ -1,0 +1,44 @@
+<project name="IJA" basedir=".">
+<path id="build.classpath">
+<fileset dir="lib">
+<include name="**/*.jar"/>
+</fileset>
+</path>
+<target name="clean" depends="clean.build,clean.jar,clean.doc"/>
+<target name="clean.build">
+<delete dir="build"/>
+<mkdir dir="build/"/>
+</target>
+<target name="clean.jar">
+<delete dir="dest/"/>
+<mkdir dir="dest/"/>
+</target>
+<target name="clean.doc">
+</target>
+<target name="compile" depends="compile.project,jar"/>
+<target name="compile.project" depends="clean.build">
+<javac srcdir="src" destdir="build/">
+<classpath refid="build.classpath"/>
+</javac>
+</target>
+<target name="jar" depends="clean.jar">
+<copy file="lib/java-json.jar" todir="dest/"/>
+<copy todir="dest/"><fileset dir="data/"/></copy>
+<jar destfile="dest/ija-app.jar" basedir="build/">
+<manifest>
+<attribute name="Main-Class" value="src.Main"/>
+<attribute name="Class-Path" value="java-json.jar"/>
+</manifest>
+</jar>
+</target>
+<target name="doc" depends="clean.doc">
+<javadoc destdir="doc/">
+<fileset dir="src/"/>
+<classpath refid="build.classpath"/>
+</javadoc>
+</target>
+<target name="run">
+<java jar="dest/ija-app.jar" fork="true">
+</java>
+</target>
+</project>

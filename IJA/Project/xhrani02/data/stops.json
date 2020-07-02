@@ -1,0 +1,82 @@
+[
+  {
+    "Name": "Stop1",
+    "StreetName": "Street5",
+    "IdIntersection": 29
+  },
+  {
+    "Name": "Stop2",
+    "StreetName": "Street1",
+    "IdIntersection": 30
+  },
+  {
+    "Name": "Stop3",
+    "StreetName": "Street9",
+    "IdIntersection": 31
+  },
+  {
+    "Name": "Stop4",
+    "StreetName": "Street5",
+    "IdIntersection": 32
+  },
+  {
+    "Name": "Stop5",
+    "StreetName": "Street11",
+    "IdIntersection": 33
+  },
+  {
+    "Name": "Stop6",
+    "StreetName": "Street4",
+    "IdIntersection": 34
+  },
+  {
+    "Name": "Stop7",
+    "StreetName": "Street6",
+    "IdIntersection": 35
+  },
+  {
+    "Name": "Stop8",
+    "StreetName": "Street3",
+    "IdIntersection": 36
+  },
+  {
+    "Name": "Stop9",
+    "StreetName": "Street2",
+    "IdIntersection": 37
+  },
+  {
+    "Name": "Stop10",
+    "StreetName": "Street7",
+    "IdIntersection": 38
+  },
+  {
+    "Name": "Stop11",
+    "StreetName": "Street2",
+    "IdIntersection": 39
+  },
+  {
+    "Name": "Stop12",
+    "StreetName": "Street2",
+    "IdIntersection": 40
+  },
+  {
+    "Name": "Stop13",
+    "StreetName": "Street3",
+    "IdIntersection": 41
+  },
+  {
+    "Name": "Stop14",
+    "StreetName": "Street10",
+    "IdIntersection": 42
+  },
+  {
+    "Name": "Stop15",
+    "StreetName": "Street20",
+    "IdIntersection": 56
+  },
+  {
+    "Name": "Stop16",
+    "StreetName": "Street15",
+    "IdIntersection": 47
+  }
+]

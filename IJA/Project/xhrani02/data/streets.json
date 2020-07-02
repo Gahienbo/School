@@ -1,0 +1,435 @@
+[
+  {
+    "Name": "Street1",
+    "IntersectionIds": [
+      {
+        "Id": 0
+      },
+      {
+        "Id": 1
+      },
+      {
+        "Id": 30
+      },
+      {
+        "Id": 2
+      },
+      {
+        "Id": 3
+      },
+      {
+        "Id": 4
+      }
+    ]
+  },
+  {
+    "Name": "Street2",
+    "IntersectionIds": [
+      {
+        "Id": 7
+      },
+      {
+        "Id": 40
+      },
+      {
+        "Id": 8
+      },
+      {
+        "Id": 9
+      },
+      {
+        "Id": 10
+      },
+      {
+        "Id": 39
+      },
+      {
+        "Id": 11
+      },
+      {
+        "Id": 12
+      },
+      {
+        "Id": 37
+      },
+      {
+        "Id": 13
+      }
+    ]
+  },
+  {
+    "Name": "Street3",
+    "IntersectionIds": [
+      {
+        "Id": 15
+      },
+      {
+        "Id": 36
+      },
+      {
+        "Id": 16
+      },
+      {
+        "Id": 17
+      },
+      {
+        "Id": 18
+      },
+      {
+        "Id": 19
+      },
+      {
+        "Id": 20
+      },
+      {
+        "Id": 21
+      }
+    ]
+  },
+  {
+    "Name": "Street4",
+    "IntersectionIds": [
+      {
+        "Id": 24
+      },
+      {
+        "Id": 25
+      },
+      {
+        "Id": 26
+      },
+      {
+        "Id": 27
+      },
+      {
+        "Id": 34
+      },
+      {
+        "Id": 28
+      }
+    ]
+  },
+  {
+    "Name": "Street5",
+    "IntersectionIds": [
+      {
+        "Id": 0
+      },
+      {
+        "Id": 29
+      },
+      {
+        "Id": 7
+      },
+      {
+        "Id": 32
+      },
+      {
+        "Id": 15
+      },
+      {
+        "Id": 24
+      }
+    ]
+  },
+  {
+    "Name": "Street6",
+    "IntersectionIds": [
+      {
+        "Id": 1
+      },
+      {
+        "Id": 5
+      },
+      {
+        "Id": 8
+      },
+      {
+        "Id": 16
+      },
+      {
+        "Id": 22
+      },
+      {
+        "Id": 35
+      },
+      {
+        "Id": 25
+      }
+    ]
+  },
+  {
+    "Name": "Street7",
+    "IntersectionIds": [
+      {
+        "Id": 2
+      },
+      {
+        "Id": 38
+      },
+      {
+        "Id": 10
+      },
+      {
+        "Id": 14
+      },
+      {
+        "Id": 41
+      },
+      {
+        "Id": 18
+      },
+      {
+        "Id": 33
+      },
+      {
+        "Id": 26
+      }
+    ]
+  },
+  {
+    "Name": "Street8",
+    "IntersectionIds": [
+      {
+        "Id": 3
+      },
+      {
+        "Id": 6
+      },
+      {
+        "Id": 12
+      },
+      {
+        "Id": 20
+      },
+      {
+        "Id": 23
+      },
+      {
+        "Id": 27
+      }
+    ]
+  },
+  {
+    "Name": "Street9",
+    "IntersectionIds": [
+      {
+        "Id": 4
+      },
+      {
+        "Id": 13
+      },
+      {
+        "Id": 31
+      },
+      {
+        "Id": 21
+      },
+      {
+        "Id": 28
+      }
+    ]
+  },
+  {
+    "Name": "Street10",
+    "IntersectionIds": [
+      {
+        "Id": 0
+      },
+      {
+        "Id": 42
+      },
+      {
+        "Id": 5
+      },
+      {
+        "Id": 9
+      },
+      {
+        "Id": 14
+      },
+      {
+        "Id": 19
+      },
+      {
+        "Id": 23
+      },
+      {
+        "Id": 28
+      }
+    ]
+  },
+  {
+    "Name": "Street11",
+    "IntersectionIds": [
+      {
+        "Id": 4
+      },
+      {
+        "Id": 6
+      },
+      {
+        "Id": 11
+      },
+      {
+        "Id": 14
+      },
+      {
+        "Id": 17
+      },
+      {
+        "Id": 22
+      },
+      {
+        "Id": 24
+      }
+    ]
+  },
+  {
+    "Name": "Street12",
+    "IntersectionIds": [
+      {
+        "Id": 1
+      },
+      {
+        "Id": 43
+      },
+      {
+        "Id": 3
+      }
+    ]
+  },
+  {
+    "Name": "Street13",
+    "IntersectionIds": [
+      {
+        "Id": 4
+      },
+      {
+        "Id": 44
+      },
+      {
+        "Id": 45
+      }
+    ]
+  },
+  {
+    "Name": "Street14",
+    "IntersectionIds": [
+      {
+        "Id": 4
+      },
+      {
+        "Id": 46
+      },
+      {
+        "Id": 45
+      }
+    ]
+  },
+  {
+    "Name": "Street15",
+    "IntersectionIds": [
+      {
+        "Id": 45
+      },
+      {
+        "Id": 47
+      },
+      {
+        "Id": 48
+      },
+      {
+        "Id": 51
+      },
+      {
+        "Id": 52
+      }
+    ]
+  },
+  {
+    "Name": "Street16",
+    "IntersectionIds": [
+      {
+        "Id": 45
+      },
+      {
+        "Id": 50
+      },
+      {
+        "Id": 48
+      },
+      {
+        "Id": 49
+      },
+      {
+        "Id": 21
+      }
+    ]
+  },
+  {
+    "Name": "Street17",
+    "IntersectionIds": [
+      {
+        "Id": 51
+      },
+      {
+        "Id": 53
+      },
+      {
+        "Id": 27
+      }
+    ]
+  },
+  {
+    "Name": "Street18",
+    "IntersectionIds": [
+      {
+        "Id": 52
+      },
+      {
+        "Id": 54
+      },
+      {
+        "Id": 26
+      }
+    ]
+  },
+  {
+    "Name": "Street19",
+    "IntersectionIds": [
+      {
+        "Id": 46
+      },
+      {
+        "Id": 49
+      },
+      {
+        "Id": 51
+      }
+    ]
+  },
+  {
+    "Name": "Street20",
+    "IntersectionIds": [
+      {
+        "Id": 52
+      },
+      {
+        "Id": 55
+      },
+      {
+        "Id": 56
+      },
+      {
+        "Id": 57
+      },
+      {
+        "Id": 58
+      },
+      {
+        "Id": 15
+      }
+    ]
+  }
+]
