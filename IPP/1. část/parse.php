@@ -1,4 +1,6 @@
 <?php
+  
+  //main body of program
   checkArguments($argv);
   $lineCounter = 0;
   $writer = constructWriter();
@@ -17,6 +19,8 @@
   endElement($writer);
   echo ($writer->outputMemory()); //prints XML
 
+
+  //functions
   function deleteComment($line) { //function that deletes comments from lines
     if (strpos($line, '#') !== false) {
       $line = explode('#', $line); //splits line into two arrrays
